@@ -1,22 +1,14 @@
 package ru.logstore.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 import ru.logstore.LoggerWrapper;
-import ru.logstore.dto.LogMessageDT;
-import ru.logstore.model.LogMessage;
+import ru.logstore.dto.*;
 import ru.logstore.repository.LogMessageRepository;
 import ru.logstore.repository.UserRepository;
-import ru.logstore.repository.mock.InMemoryLogMessageRepositoryImpl;
 import ru.logstore.util.LogMessageUtil;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -32,16 +24,17 @@ public class MainController {
     private LogMessageRepository logMessageRepository;
 
     @RequestMapping(value = "/log", method = RequestMethod.GET)
-    public List<LogMessageDT> getAll() {
+    public List<LogMessageDT> getAll(@RequestParam(value = "page", required = false) Integer page,
+                                     @RequestParam(value = "size", required = false) Integer size) {
         //LOG.info("getAll for User {}", userId);
-        return LogMessageUtil.getLogMessagesDT(logMessageRepository.getAll());
+        return LogMessageUtil.getLogMessagesDT(logMessageRepository.getPage(page == null ? 0 : page.intValue(), size == null ? 0 : size.intValue()));
     }
 
     @RequestMapping(value = "/log", method = RequestMethod.POST)
-    public void create(LogMessage logMessage) {
+    public void create(newMessageBean newMessage, Model model) {
         //int userId = LoggedUser.id();
-        //LOG.info("create {} for User {}", meal, userId);
-        logMessageRepository.save(logMessage);
+        LOG.info("create {} for User {}", "","");
+        //logMessageRepository.save(newMessage);
     }
 
  }

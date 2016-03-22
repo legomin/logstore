@@ -5,13 +5,16 @@ import java.time.LocalDateTime;
 /**
  */
 public class LogMessage extends BaseEntity{
-    protected final LocalDateTime dt;
+    protected LocalDateTime dt;
 
-    protected final Level level;
+    protected Level level;
 
-    protected final String message;
+    protected String message;
 
-    protected final String author;
+    protected String author;
+
+    public LogMessage() {
+    }
 
     public LogMessage(LocalDateTime dt, String author, String message, Level level) {
         this(null, dt, author, message, level);

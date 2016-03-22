@@ -62,7 +62,10 @@ public class InMemoryLogMessageRepositoryImpl implements LogMessageRepository {
         if (size == 0) {
             return getAll();
         }
-        // TODO need to implement pagination
-        return null;
+        return getAll().stream()
+                .skip(page * size)
+                .limit(size)
+                .collect(Collectors.toCollection(ArrayList::new));
+
     }
 }
