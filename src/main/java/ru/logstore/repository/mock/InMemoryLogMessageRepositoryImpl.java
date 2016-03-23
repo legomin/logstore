@@ -59,7 +59,7 @@ public class InMemoryLogMessageRepositoryImpl implements LogMessageRepository {
 
     @Override
     public Collection<LogMessage> getPage(int page, int size) {
-        if (size <= 0 || page <= 0) {
+        if (size <= 0 || page < 0) {
             return getAll();
         }
         return getAll().stream()

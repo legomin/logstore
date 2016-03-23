@@ -7,7 +7,7 @@ function Log($scope,$http){
         $http.get('/logstore/log?page='+$scope.page+'&size='+$scope.size)
             .then(
                 function (responce) {
-                    $scope.logs = responce.data;
+                    $scope.logs = responce.data.logs;
                     $scope.statusGet = responce.status;
                 },
                 function (responce) {

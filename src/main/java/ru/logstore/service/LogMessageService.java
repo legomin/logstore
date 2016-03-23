@@ -10,7 +10,6 @@ import ru.logstore.model.LogMessage;
 import ru.logstore.repository.LogMessageRepository;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -36,29 +35,20 @@ public class LogMessageService {
 
 
 
-    public static List<LogMessageDT> getLogMessagesDT(Collection<LogMessage> logMessages) {
+    public List<LogMessageDT> getLogMessagesDT(Collection<LogMessage> logMessages) {
 
         return logMessages.stream()
                 .map(lm -> new LogMessageDT(lm.getDt(), lm.getMessage(), lm.getLevel()))
                 .collect(Collectors.toList());
     }
 
-    public static Map<String,Object> validateNewMessage(NewMessageBean newMessage) {
+    public Map<String,Object> validateNewMessage(NewMessageBean newMessage, String loggedUser) {
 
         Map<String,Object> result = new HashMap<>();
         List<Error> errors = new ArrayList<>();
 
-        LocalDateTime dt = null;
+        LocalDateTime dt = LocalDateTime.now();;
         Level level = null;
-
-        //date
-        try {
-            dt = LocalDateTime.parse(newMessage.getDt());
-        }
-        catch (DateTimeParseException e) {
-            errors.add(new Error("dt", "Wrong date"));
-            result.put("result", 400);
-        }
 
         //level
         try {
@@ -72,7 +62,7 @@ public class LogMessageService {
 
         if (result.get("result") == null) {
             result.put("result", 200);
-            LogMessage logMessage = new LogMessage(dt, newMessage.getAuthor(), newMessage.getMessage(), level);
+            LogMessage logMessage = new LogMessage(dt, loggedUser, newMessage.getMessage(), level);
             result.put("logMessage", logMessage);
         }
         else {
