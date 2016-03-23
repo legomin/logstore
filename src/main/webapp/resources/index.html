@@ -5,24 +5,35 @@
         <title>LogClient</title>
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script>
         <script src="controller.js"></script>
-        <link rel="stylesheet" href="syle.css">
-   </head>
+    </head>
     <body>
+
         <div ng-controller = "Log">
+            <h1>Get logs:</h1>
+            <form ng-submit="getLogs()">
+                page:<input type="number" ng-init="page=0" ng-model="page"/> &nbsp;&nbsp;
+                size:<input type="number" ng-init="size=0" ng-model="size"/> &nbsp;&nbsp;
+                <input type="submit" value="Get!">
+            </form>
+
             <table>
                 <tr ng-repeat = "log in logs">
                     <td>{{log.dt}}</td>
                     <td>{{log.level}}</td>
                     <td>{{log.message}}</td>
                 </tr>
-           </table>
+            </table>
+            <h2>Responce status: {{statusGet}}</h2>
+
+            <h1>Add log:</h1>
             <form ng-submit="sendMessage()">
-                <p><input type="text" ng-model="dt"> Date</p>
-                <p><input type="text" ng-model="author"> author</p>
-                <p><input type="text" ng-model="level"> level</p>
-                <p><input type="text" ng-model="message"> message</p>
-                <p><input type="submit" value="Submit"></p>
+                date:<input type="datetime-local" ng-model="dt"> &nbsp;&nbsp;
+                author:<input type="text" ="author"> &nbsp;&nbsp;
+                level:<input type="text" ng-model="level"> &nbsp;&nbsp;
+                message:<input type="text" ng-model="message"> &nbsp;&nbsp;
+                <input type="submit" value="Submit">
            </form>
-         </div>
+           <h2>Responce result: {{statusPost}}</h2>
+        </div>
     </body>
 </html>

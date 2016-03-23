@@ -1,10 +1,8 @@
 package ru.logstore.dto;
 
-import ru.logstore.model.BaseEntity;
 import ru.logstore.model.Level;
 
 import java.time.LocalDateTime;
-import java.util.TimeZone;
 
 /**
  */

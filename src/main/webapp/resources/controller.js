@@ -2,11 +2,19 @@
  * Created by Виталий on 21.12.2015.
  */
 function Log($scope,$http){
-    $http.get('/logstore/log').
-    success(function(data) {
-        $scope.logs = data;
-    });
 
+    $scope.getLogs = function () {
+        $http.get('/logstore/log?page='+$scope.page+'&size='+$scope.size)
+            .then(
+                function (responce) {
+                    $scope.logs = responce.data;
+                    $scope.statusGet = responce.status;
+                },
+                function (responce) {
+                    $scope.statusGet = responce.status + ", " + angular.toJson(responce.data);
+                }
+            );
+    };
 
      $scope.sendMessage = function () {
 
@@ -17,14 +25,15 @@ function Log($scope,$http){
              'message' : $scope.message,
          };
 
-         $http.post('/logstore/log', angular.toJson($scope.newMessage)).success(function(response){
-            //alert(response);
-             $http.get('/logstore/log').
-             success(function(data) {
-                 $scope.seats = data;
-             });
-
-        });
+         $http.post('/logstore/log', angular.toJson($scope.newMessage))
+             .then(
+                 function (responce) {
+                     $scope.statusPost = responce.status + ", " + angular.toJson(responce.data);
+                 },
+                 function (responce) {
+                     $scope.statusPost = responce.status + ", " + angular.toJson(responce.data);
+                 }
+             );
 
 
      }

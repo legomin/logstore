@@ -1,12 +1,8 @@
 package ru.logstore.dto;
 
-import ru.logstore.model.Level;
-
-import java.time.LocalDateTime;
-
 /**
  */
-public class newMessageBean {
+public class NewMessageBean {
     private String dt;
 
     private String level;
@@ -15,7 +11,7 @@ public class newMessageBean {
 
     private String author;
 
-    public newMessageBean() {
+    public NewMessageBean() {
     }
 
     public String getDt() {
