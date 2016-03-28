@@ -52,13 +52,13 @@ public class InMemoryLogMessageRepositoryImpl implements LogMessageRepository {
     }
 
     @Override
-    public Collection<LogMessage> getAll() {
+    public List<LogMessage> getAll() {
         return repository.values().stream()
                 .sorted(USER_MEAL_COMPARATOR).collect(Collectors.toList());
     }
 
     @Override
-    public Collection<LogMessage> getPage(int page, int size) {
+    public List<LogMessage> getPage(int page, int size) {
         if (size <= 0 || page < 0) {
             return getAll();
         }

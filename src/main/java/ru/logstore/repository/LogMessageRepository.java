@@ -4,6 +4,7 @@ import ru.logstore.model.LogMessage;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.List;
 
 /**
  */
@@ -12,8 +13,8 @@ public interface LogMessageRepository {
     LogMessage save(LogMessage logMessage);
 
     // ORDERED DATE, TIME
-    Collection<LogMessage> getAll();
+    List<LogMessage> getAll();
 
     // ORDERED DATE, TIME
-    Collection<LogMessage> getPage(int page, int size);
+    List<LogMessage> getPage(int page, int size);
 }

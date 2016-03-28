@@ -9,14 +9,19 @@
     <http pattern="/resources/**" security="none"/>
     <http pattern="/webjars/**" security="none"/>
 
-    <http pattern="/log/**" use-expressions="true" name="restSecurityFilterChain" create-session="stateless">
+    <http pattern="/logs/**" use-expressions="true" name="restSecurityFilterChain" create-session="stateless">
         <http-basic/>
         <intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>
         <csrf disabled="true"/>
     </http>
 
     <authentication-manager>
-        <authentication-provider ref="userService">
+        <authentication-provider>
+            <user-service>
+                <user name="admin" password="admin" authorities="ROLE_USER, ROLE_ADMIN" />
+                <user name="user" password="user" authorities="ROLE_USER" />
+                <user name="other" password="other" authorities="ROLE_USER" />
+            </user-service>
         </authentication-provider>
     </authentication-manager>
 </beans:beans>

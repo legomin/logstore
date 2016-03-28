@@ -4,10 +4,10 @@
 function Log($scope,$http){
 
     $scope.getLogs = function () {
-        $http.get('/logstore/log?page='+$scope.page+'&size='+$scope.size)
+        $http.get('/logstore/logs?page='+$scope.page+'&size='+$scope.size)
             .then(
                 function (responce) {
-                    $scope.logs = responce.data.logs;
+                    $scope.logs = responce.data;
                     $scope.statusGet = responce.status;
                 },
                 function (responce) {
@@ -19,13 +19,11 @@ function Log($scope,$http){
      $scope.sendMessage = function () {
 
          $scope.newMessage  = {
-             'dt' : $scope.dt,
-             'author' : $scope.author,
              'level' : $scope.level,
              'message' : $scope.message,
          };
 
-         $http.post('/logstore/log', angular.toJson($scope.newMessage))
+         $http.post('/logstore/logs', angular.toJson($scope.newMessage))
              .then(
                  function (responce) {
                      $scope.statusPost = responce.status + ", " + angular.toJson(responce.data);

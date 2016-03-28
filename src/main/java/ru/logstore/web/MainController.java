@@ -3,14 +3,14 @@ package ru.logstore.web;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import ru.logstore.LoggerWrapper;
 import ru.logstore.dto.*;
 import ru.logstore.model.LogMessage;
 import ru.logstore.service.LogMessageService;
-import ru.logstore.service.UserService;
 
+import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,41 +24,24 @@ public class MainController {
     @Autowired
     private LogMessageService logMessageService;
 
-    @Autowired
-    private UserService userService;
-
-    @RequestMapping(value = "/log", method = RequestMethod.GET)
-    public ResponseEntity<Map<String,Object>>  getAll(@RequestParam(value = "page", required = false) Integer page,
+    @RequestMapping(value = "/logs", method = RequestMethod.GET)
+    public List<LogMessageDT>  getAll(@RequestParam(value = "page", required = false) Integer page,
                                      @RequestParam(value = "size", required = false) Integer size) {
 
-        Map<String, Object> resultMap = new HashMap<>();
-        String loggedUser = userService.getLoggedUser();
-        if ("NotAuthorised".equals(loggedUser)) {
-            LOG.info("authtoriation error");
-            resultMap.put("message","Access denied");
-            return new ResponseEntity<>(resultMap, HttpStatus.UNAUTHORIZED);
-        }
-
         LOG.info("getAll for logmessages ");
-        resultMap.put("logs", logMessageService.getLogMessagesDT(logMessageService.getPage(page == null ? 0 :
-                page.intValue(), size == null ? 0 : size.intValue())) );
+        return logMessageService.getLogMessagesDT(logMessageService.getPage(page == null ? 0 :
+                page.intValue(), size == null ? 0 : size.intValue())) ;
+   }
 
-        return new ResponseEntity<>(resultMap, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/log", method = RequestMethod.POST)
-    public ResponseEntity<Map<String,Object>> create(@RequestBody NewMessageBean newMessage) {
+    @RequestMapping(value = "/logs", method = RequestMethod.POST)
+    public ResponseEntity<Map<String,Object>> create(@Valid @RequestBody NewMessageBean newMessage,
+                                                     Authentication authentication) {
 
         Map<String, Object> resultMap = new HashMap<>();
-        String loggedUser = userService.getLoggedUser();
-        if ("NotAuthorised".equals(loggedUser)) {
-            LOG.info("authtoriation error");
-            resultMap.put("message","Access denied");
-            return new ResponseEntity<>(resultMap, HttpStatus.UNAUTHORIZED);
-        }
-        else if ("other".equals(loggedUser)) {
+        String loggedUser = (String) authentication.getPrincipal();
+        if ("other".equals(loggedUser)) {
             LOG.info("forbiden");
-            resultMap.put("message","User other does not have access");
+            resultMap.put("message","User1 other does not have access");
             return new ResponseEntity<>(resultMap, HttpStatus.FORBIDDEN);
         }
 
